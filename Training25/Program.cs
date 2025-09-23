@@ -3,16 +3,17 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // Program.cs
-// Program on main branch.
+// Program on T05 - Multiplication tables. 
 // ------------------------------------------------------------------------------------------------
-int n1;
-while (true) {
-   Console.Write ("Enter a number: ");
-   string input = Console.ReadLine ();
-   if (int.TryParse (input, out n1)) break;
-   else Console.WriteLine ("Please enter a valid integer");
+namespace Training25;
+internal class Program {
+   static void Main (string[] args) => Multiply ();
+
+   /// <summary> prints tables from 1 to 10</summary>
+   static void Multiply () {
+      for (int i = 1; i <= 10; i++) {
+         for (int j = 1; j <= 10; j++) Console.WriteLine ($"{i} * {j,2} = {i * j}"); //{j,2} right aligns with width 2
+         Console.WriteLine ();
+      }
+   }
 }
-for (int i = 1; i <= 10; i++) {
-   Console.WriteLine ($"{n1} * {i,2} = {n1 * i}"); //{i,2} right aligns with width 2
-}
-Console.ReadKey ();
