@@ -19,5 +19,3 @@ internal class Program {
       }
    }
 }
-
-
