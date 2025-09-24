@@ -8,12 +8,13 @@
 namespace Training25;
 
 internal class Program {
-   static void Main (string[] args) => Multiply ();
+   static void Main () => Multiply ();
 
-   /// <summary>Prints multiplication tables from 1 to 10</summary>
+   ///<summary>Prints multiplication tables from 1 to 10</summary>
    static void Multiply () {
-      for (int i = 1; i <= 10; i++) {
-         for (int j = 1; j <= 10; j++)
+      int k = 1;
+      for (int i = k; i <= 10; i++) {
+         for (int j = k; j <= 10; j++)
             Console.WriteLine ($"{i} * {j,2} = {i * j}"); //{j,2} right aligns with width 2
          Console.WriteLine ();
       }
