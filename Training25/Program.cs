@@ -3,7 +3,7 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // Program.cs
-// Program on T05 - Multiplication tables. 
+// Program on T05 - Multiplication tables.
 // ------------------------------------------------------------------------------------------------
 namespace Training25;
 
