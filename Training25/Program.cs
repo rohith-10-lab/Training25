@@ -11,41 +11,36 @@ internal class Program {
    static void Main () {
       // GetInput returns a int, it is the parameter for the IsArmStrong.
       // IsArmStrong returns bool, if bool is true IF case executes
-      if (IsArmStrong (GetInput ())) {
-         Console.ForegroundColor = ConsoleColor.Green;
-         Console.WriteLine ("It is an armstrong number");
-      } else {
-         Console.ForegroundColor = ConsoleColor.Red;
-         Console.WriteLine ("It is not an armstrong number");
-      }
-      Console.ForegroundColor = ConsoleColor.White; // The rest of the output is white again
+      if (IsArmStrong (GetInput ())) PrintMessage ("It is an armstrong number", ConsoleColor.Green);
+      else PrintMessage ("It is not an armstrong number", ConsoleColor.Red);
    }
 
    /// <summary>Gets only positive integer from the user </summary>
    static int GetInput () {
       while (true) {
-         Console.ForegroundColor = ConsoleColor.White;
          Console.Write ("Enter a positive integer: ");
-         if (int.TryParse (Console.ReadLine (), out int number) && number >= 0) {
-            Console.Clear ();  // Clears all the invalid inputs
-            Console.WriteLine ($"Enter a positive integer: {number}");
-            return number;
-         }
-         Console.ForegroundColor = ConsoleColor.Yellow;
-         Console.WriteLine ("Enter a valid input");
+         if (int.TryParse (Console.ReadLine (), out int number) && number >= 0) return number;
+         PrintMessage ("Enter a valid input\n", ConsoleColor.Yellow);
+         Console.Write ("Press any key to continue...");
+         Console.ReadKey ();
+         Console.Clear ();
       }
    }
 
    /// <summary>Checks whether the input is armstrong or not</summary>
    static bool IsArmStrong (int number) {
-      string numberString = number.ToString ();
-      double totalSum = 0;
-      for (int index = 0; index < numberString.Length; index++) {
-         /* Converts each index of numberString into int, then raises the power and adds
-         it to totalSum*/
-         totalSum += Math.Pow (int.Parse (numberString[index].ToString ()), numberString.Length);
+      string numStr = number.ToString ();
+      int totalSum = 0;
+      foreach (char index in numStr) {
+         totalSum += (int)Math.Pow ((index - '0'), numStr.Length);
       }
-      if ((int)totalSum == int.Parse (numberString)) return true;
-      else return false;
+      return totalSum == number;
+   }
+
+   /// <summary>Prints the message in the console with a specified color</summary>
+   static void PrintMessage (string message, ConsoleColor color) {
+      Console.ForegroundColor = color;
+      Console.Write (message);
+      Console.ResetColor ();
    }
 }
