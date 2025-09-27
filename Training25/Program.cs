@@ -5,25 +5,26 @@
 // Program.cs
 // Program on T11 - Armstrong number.
 // ------------------------------------------------------------------------------------------------
+using static System.Console;
 namespace Training25;
 
 internal class Program {
    static void Main () {
-      // GetInput returns a int, it is the parameter for the IsArmStrong.
-      // IsArmStrong returns bool, if bool is true IF case executes
-      if (IsArmStrong (GetInput ())) PrintMessage ("It is an armstrong number", ConsoleColor.Green);
-      else PrintMessage ("It is not an armstrong number", ConsoleColor.Red);
+      int input = GetInput ();
+      bool result = IsArmStrong (input);
+      PrintMessage (result ? $"{input} is an armstrong number"
+         : $"{input} is not an armstrong number", result ? ConsoleColor.Green : ConsoleColor.Red);
    }
 
    /// <summary>Gets only positive integer from the user </summary>
    static int GetInput () {
       while (true) {
-         Console.Write ("Enter a positive integer: ");
-         if (int.TryParse (Console.ReadLine (), out int number) && number >= 0) return number;
+         Write ("Enter a positive integer: ");
+         if (int.TryParse (ReadLine (), out int number) && number >= 0) return number;
          PrintMessage ("Enter a valid input\n", ConsoleColor.Yellow);
-         Console.Write ("Press any key to continue...");
-         Console.ReadKey ();
-         Console.Clear ();
+         Write ("Press any key to continue...");
+         ReadKey ();
+         Clear ();
       }
    }
 
@@ -31,16 +32,14 @@ internal class Program {
    static bool IsArmStrong (int number) {
       string numStr = number.ToString ();
       int totalSum = 0;
-      foreach (char index in numStr) {
-         totalSum += (int)Math.Pow ((index - '0'), numStr.Length);
-      }
+      foreach (char index in numStr) totalSum += (int)Math.Pow (index - '0', numStr.Length);
       return totalSum == number;
    }
 
    /// <summary>Prints the message in the console with a specified color</summary>
    static void PrintMessage (string message, ConsoleColor color) {
-      Console.ForegroundColor = color;
-      Console.Write (message);
-      Console.ResetColor ();
+      ForegroundColor = color;
+      Write (message);
+      ResetColor ();
    }
 }
