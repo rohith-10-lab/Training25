@@ -18,7 +18,7 @@ internal class Program {
    static int GetInput () {
       while (true) {
          Write ("Enter a positive integer: ");
-         if (int.TryParse (Console.ReadLine (), out int number) && number >= 0) return number;
+         if (int.TryParse (ReadLine (), out int number) && number >= 0) return number;
          ForegroundColor = ConsoleColor.Yellow;
          WriteLine ("Enter a valid input");
          ResetColor ();
@@ -30,7 +30,6 @@ internal class Program {
 
    /// <summary>Returns the digital root of the input</summary>
    static int DigitalRoot (int number) {
-      if (number == 0) return 0;
-      else return (number != 0 && number % 9 == 0) ? 9 : number % 9;
+      return number == 0 ? 0 : 1 + (number - 1) % 9;
    }
 }
