@@ -29,7 +29,5 @@ internal class Program {
    }
 
    /// <summary>Returns the digital root of the input</summary>
-   static int DigitalRoot (int number) {
-      return number == 0 ? 0 : 1 + (number - 1) % 9;
-   }
+   static int DigitalRoot (int number) => number == 0 ? 0 : 1 + ((number - 1) % 9);
 }
