@@ -3,11 +3,34 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // Program.cs
-// Program on main branch.
+// Program on T06 - Digital Root.
 // ------------------------------------------------------------------------------------------------
+using static System.Console;
 namespace Training25;
+
 internal class Program {
-   static void Main (string[] args) {
-      Console.WriteLine ("Hello, World!");
+   static void Main () {
+      int input = GetInput ();
+      WriteLine ($"The digital root of {input} is {DigitalRoot (input)} ");
+   }
+
+   /// <summary>Gets only positive integer from the user</summary>
+   static int GetInput () {
+      while (true) {
+         Write ("Enter a positive integer: ");
+         if (int.TryParse (Console.ReadLine (), out int number) && number >= 0) return number;
+         ForegroundColor = ConsoleColor.Yellow;
+         WriteLine ("Enter a valid input");
+         ResetColor ();
+         Write ("Press any key to continue...");
+         ReadKey ();
+         Clear ();
+      }
+   }
+
+   /// <summary>Returns the digital root of the input</summary>
+   static int DigitalRoot (int number) {
+      if (number == 0) return 0;
+      else return (number != 0 && number % 9 == 0) ? 9 : number % 9;
    }
 }
