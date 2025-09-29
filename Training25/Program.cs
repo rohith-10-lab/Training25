@@ -10,9 +10,9 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      int DigitalRoot (int number) => number == 0 ? 0 : 1 + ((number - 1) % 9);
       int input = GetInput ();
-      WriteLine ($"The digital root of {input} is {DigitalRoot (input)} ");
+      // Digital root : compresses any number to its single digit sum
+      WriteLine ($"The digital root of {input} is {(input == 0 ? 0 : 1 + ((input - 1) % 9))}");
    }
 
    // Gets only positive integer from the user
