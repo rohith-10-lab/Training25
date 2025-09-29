@@ -10,11 +10,12 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
+      int DigitalRoot (int number) => number == 0 ? 0 : 1 + ((number - 1) % 9);
       int input = GetInput ();
       WriteLine ($"The digital root of {input} is {DigitalRoot (input)} ");
    }
 
-   /// <summary>Gets only positive integer from the user</summary>
+   // Gets only positive integer from the user
    static int GetInput () {
       while (true) {
          Write ("Enter a positive integer: ");
@@ -27,7 +28,4 @@ internal class Program {
          Clear ();
       }
    }
-
-   /// <summary>Returns the digital root of the input</summary>
-   static int DigitalRoot (int number) => number == 0 ? 0 : 1 + ((number - 1) % 9);
 }
