@@ -11,7 +11,20 @@ namespace Training25;
 internal class Program {
    static void Main () {
       int num1 = GetInput ("Enter the first positive integer: ");
-      int num2 = GetInput ("Enter the second positive integer: ");
+      int num2 = 0;
+      if (num1 == 0) {
+         while (num2 == 0) {
+            num2 = GetInput ("Enter a positive number greater than zero: ");
+            if (num2 == 0) {
+               ForegroundColor = ConsoleColor.Yellow;
+               WriteLine ("If the first number is zero, the second number can't be zero");
+               ResetColor ();
+               Write ("Press any key to continue...");
+               ReadKey ();
+               Clear ();
+            }
+         }
+      } else num2 = GetInput ("Enter the second positive integer: ");
       int gcd = Gcd (num1, num2);
       WriteLine ($"The Gcd of {num1} and {num2} is {gcd}");
       WriteLine ($"The Lcm of {num1} and {num2} is {num1 * num2 / gcd}");
