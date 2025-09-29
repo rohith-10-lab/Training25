@@ -16,7 +16,7 @@ internal class Program {
          : $"{input} is not an armstrong number", result ? ConsoleColor.Green : ConsoleColor.Red);
    }
 
-   /// <summary>Gets only positive integer from the user </summary>
+   // Gets only positive integer from the user
    static int GetInput () {
       while (true) {
          Write ("Enter a positive integer: ");
@@ -28,15 +28,15 @@ internal class Program {
       }
    }
 
-   /// <summary>Checks whether the input is armstrong or not</summary>
+   // Checks whether the input is armstrong or not
    static bool IsArmStrong (int number) {
       string numStr = number.ToString ();
-      int totalSum = 0;
-      foreach (char index in numStr) totalSum += (int)Math.Pow (index - '0', numStr.Length);
-      return totalSum == number;
+      int sum = 0;
+      foreach (char index in numStr) sum += (int)Math.Pow (index - '0', numStr.Length);
+      return sum == number;
    }
 
-   /// <summary>Prints the message in the console with a specified color</summary>
+   // Prints the message in the console with a specified color
    static void PrintMessage (string message, ConsoleColor color) {
       ForegroundColor = color;
       Write (message);
