@@ -10,47 +10,54 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      int num1 = GetInput ("Enter the first positive integer: ");
-      int num2 = 0;
-      if (num1 == 0) {
-         while (num2 == 0) {
-            num2 = GetInput ("Enter a positive number greater than zero: ");
-            if (num2 == 0) {
-               ForegroundColor = ConsoleColor.Yellow;
-               WriteLine ("If the first number is zero, the second number can't be zero");
-               ResetColor ();
-               Write ("Press any key to continue...");
-               ReadKey ();
-               Clear ();
+      int count = GetInput ("Enter how many numbers you want to calculate GCD for: ", 2);
+      int[] numbers = new int[count];
+      long product = 1;
+      for (int index = 0; index < count; index++) {
+         // Checks for the last number
+         if (index == count - 1) {
+            bool zero = true;
+            // Checks if the previous indices have 0
+            for (int prevIndex = 0; prevIndex < index; prevIndex++)
+               if (numbers[prevIndex] != 0) zero = false;
+            if (zero) {
+               do {
+                  numbers[index] = GetInput ($"Enter number {index + 1} greater than zero: ");
+                  if (numbers[index] == 0) WarningMsg ("Last number can't be zero, " +
+                         "if the rest of the numbers are zero");
+               } while (numbers[index] == 0);
+               product *= numbers[index];
+               continue;
             }
          }
-      } else num2 = GetInput ("Enter the second positive integer: ");
-      int gcd = Gcd (num1, num2);
-      WriteLine ($"The Gcd of {num1} and {num2} is {gcd}");
-      WriteLine ($"The Lcm of {num1} and {num2} is {num1 * num2 / gcd}");
+         numbers[index] = GetInput ($"Enter number {index + 1}: ");
+         product *= numbers[index];
+      }
+      int result = numbers[0];
+      for (int index = 1; index < count; index++) result = Gcd (result, numbers[index]);
+      WriteLine ($"The GCD of the given numbers is {result}");
+      WriteLine ($"The LCM of the given numbers is {product / result}");
    }
 
    // Gets only positive number from the user
-   static int GetInput (string prompt) {
+   static int GetInput (string prompt, int min = 0) {
       while (true) {
          Write (prompt);
-         if (int.TryParse (ReadLine (), out int num) && num >= 0) return num;
-         ForegroundColor = ConsoleColor.Yellow;
-         WriteLine ("Enter a valid input");
-         ResetColor ();
-         Write ("Press any key to continue...");
-         ReadKey ();
-         Clear ();
+         if (int.TryParse (ReadLine (), out int num) && num >= min) return num;
+         WarningMsg ("Enter a valid input");
       }
    }
 
-   // Calculates gcd using Euclidean algorithm
-   static int Gcd (int num1, int num2) {
-      while (num2 != 0) {
-         int temp = num2;
-         num2 = num1 % num2;
-         num1 = temp;
-      }
-      return num1;
+   // Calculates GCD using Euclidean algorithm
+   static int Gcd (int num1, int num2) => (num2 == 0) ? num1 : Gcd (num2, num1 % num2);
+
+   // Prints the warning prompt
+   static void WarningMsg (string msg) {
+      ForegroundColor = ConsoleColor.Yellow;
+      WriteLine (msg);
+      ResetColor ();
+      Write ("Press any key to continue...");
+      ReadKey ();
+      Clear ();
    }
 }
