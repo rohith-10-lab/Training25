@@ -12,31 +12,13 @@ internal class Program {
    static void Main () {
       int count = GetInput ("Enter how many numbers you want to calculate GCD for: ", 2);
       int[] numbers = new int[count];
-      long product = 1;
-      for (int index = 0; index < count; index++) {
-         // Checks for the last number
-         if (index == count - 1) {
-            bool zero = true;
-            // Checks if the previous indices have 0
-            for (int prevIndex = 0; prevIndex < index; prevIndex++)
-               if (numbers[prevIndex] != 0) zero = false;
-            if (zero) {
-               do {
-                  numbers[index] = GetInput ($"Enter number {index + 1} greater than zero: ");
-                  if (numbers[index] == 0) WarningMsg ("Last number can't be zero, " +
-                         "if the rest of the numbers are zero");
-               } while (numbers[index] == 0);
-               product *= numbers[index];
-               continue;
-            }
-         }
-         numbers[index] = GetInput ($"Enter number {index + 1}: ");
-         product *= numbers[index];
-      }
-      int result = numbers[0];
-      for (int index = 1; index < count; index++) result = Gcd (result, numbers[index]);
-      WriteLine ($"The GCD of the given numbers is {result}");
-      WriteLine ($"The LCM of the given numbers is {product / result}");
+      for (int index = 0; index < count; index++)
+         numbers[index] = GetInput ($"Enter number {index + 1}: ", 1);
+      int gcdResult = numbers[0], lcmResult = numbers[0];
+      for (int index = 1; index < count; index++) gcdResult = GCD (gcdResult, numbers[index]);
+      for (int index = 1; index < count; index++) lcmResult = LCM (lcmResult, numbers[index]);
+      WriteLine ($"The GCD of the given numbers is {gcdResult}");
+      WriteLine ($"The LCM of the given numbers is {lcmResult}");
    }
 
    // Gets only positive number from the user
@@ -49,7 +31,10 @@ internal class Program {
    }
 
    // Calculates GCD using Euclidean algorithm
-   static int Gcd (int num1, int num2) => (num2 == 0) ? num1 : Gcd (num2, num1 % num2);
+   static int GCD (int num1, int num2) => (num2 == 0) ? num1 : GCD (num2, num1 % num2);
+
+   // Calculates LCM using GCD
+   static int LCM (int num1, int num2) => num1 / GCD (num1, num2) * num2;
 
    // Prints the warning prompt
    static void WarningMsg (string msg) {
