@@ -10,15 +10,16 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      int count = GetInput ("Enter how many numbers you want to calculate GCD for: ", 2);
-      int[] numbers = new int[count];
-      for (int index = 0; index < count; index++)
-         numbers[index] = GetInput ($"Enter number {index + 1}: ", 1);
-      int gcdResult = numbers[0], lcmResult = numbers[0];
-      for (int index = 1; index < count; index++) gcdResult = GCD (gcdResult, numbers[index]);
-      for (int index = 1; index < count; index++) lcmResult = LCM (lcmResult, numbers[index]);
-      WriteLine ($"The GCD of the given numbers is {gcdResult}");
-      WriteLine ($"The LCM of the given numbers is {lcmResult}");
+      int cnt = GetInput ("Enter how many numbers you want to calculate GCD for: ", 2);
+      int[] nums = new int[cnt];
+      for (int i = 0; i < cnt; i++) nums[i] = GetInput ($"Enter number {i + 1}: ");
+      int gcd = nums[0], lcm = nums[0];
+      for (int i = 1; i < cnt; i++) {
+         gcd = GCD (gcd, nums[i]);
+         lcm = LCM (lcm, nums[i]);
+      }
+      WriteLine ($"The GCD of the given numbers is {gcd}");
+      WriteLine ($"The LCM of the given numbers is {lcm}");
    }
 
    // Gets only positive number from the user
@@ -34,15 +35,16 @@ internal class Program {
    static int GCD (int num1, int num2) => (num2 == 0) ? num1 : GCD (num2, num1 % num2);
 
    // Calculates LCM using GCD
-   static int LCM (int num1, int num2) => num1 / GCD (num1, num2) * num2;
+   static int LCM (int num1, int num2)
+      => num1 == 0 || num2 == 0 ? 0 : num1 / GCD (num1, num2) * num2;
 
    // Prints the warning prompt
    static void WarningMsg (string msg) {
       ForegroundColor = ConsoleColor.Yellow;
       WriteLine (msg);
       ResetColor ();
-      Write ("Press any key to continue...");
+      WriteLine ("Press any key to continue...");
       ReadKey ();
-      Clear ();
+      WriteLine ();
    }
 }
