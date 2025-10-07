@@ -13,12 +13,13 @@ internal class Program {
       int cnt = GetInput ("Enter how many numbers you want to calculate GCD for: ", 2);
       int[] nums = new int[cnt];
       for (int i = 0; i < cnt; i++) nums[i] = GetInput ($"Enter number {i + 1}: ");
-      int gcd = nums[0], lcm = nums[0];
+      int gcd = nums[0], lcm = gcd;
       for (int i = 1; i < cnt; i++) {
-         gcd = GCD (gcd, nums[i]);
-         lcm = LCM (lcm, nums[i]);
+         int elem = nums[i];
+         gcd = GCD (gcd, elem);
+         lcm = LCM (lcm, elem);
       }
-      WriteLine ($"The GCD of the given numbers is {gcd}");
+      WriteLine ($"\nThe GCD of the given numbers is {gcd}");
       WriteLine ($"The LCM of the given numbers is {lcm}");
    }
 
@@ -27,7 +28,9 @@ internal class Program {
       while (true) {
          Write (prompt);
          if (int.TryParse (ReadLine (), out int num) && num >= min) return num;
-         WarningMsg ("Enter a valid input");
+         ForegroundColor = ConsoleColor.Yellow;
+         WriteLine ("Enter a valid input\n");
+         ResetColor ();
       }
    }
 
@@ -37,14 +40,4 @@ internal class Program {
    // Calculates LCM using GCD
    static int LCM (int num1, int num2)
       => num1 == 0 || num2 == 0 ? 0 : num1 / GCD (num1, num2) * num2;
-
-   // Prints the warning prompt
-   static void WarningMsg (string msg) {
-      ForegroundColor = ConsoleColor.Yellow;
-      WriteLine (msg);
-      ResetColor ();
-      WriteLine ("Press any key to continue...");
-      ReadKey ();
-      WriteLine ();
-   }
 }
