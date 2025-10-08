@@ -5,6 +5,7 @@
 // Program.cs
 // Program to check whether a password is strong or not.
 // ------------------------------------------------------------------------------------------------
+using System.Text;
 using static System.Console;
 
 namespace Training25;
@@ -18,33 +19,30 @@ internal class Program {
             Msg ("Enter a valid input\n");
             continue;
          }
-         string result = PwdParse (pwd);
-         if (string.IsNullOrEmpty (result)) {
+         if (TryParsePwd (pwd, out string errors)) {
             Msg ("Password is strong", ConsoleColor.Green);
             break;
-         } else Msg (result);
+         } else {
+            Msg ("Password is weak", ConsoleColor.Red);
+            Msg (errors);
+         }
       }
    }
 
    // Checks password rules and returns error messages for violations
-   static string PwdParse (string pwd) {
-      string errors = "";
-      bool hasDigit = false, hasLower = false, hasUpper = false, hasSpecial = false,
-          hasSpace = false;
-      foreach (char c in pwd) {
-         if (char.IsWhiteSpace (c)) hasSpace = true;
-         if (char.IsDigit (c)) hasDigit = true;
-         if (char.IsLower (c)) hasLower = true;
-         if (char.IsUpper (c)) hasUpper = true;
-         if (!char.IsLetterOrDigit (c)) hasSpecial = true;
-      }
-      if (pwd.Length < 6) errors += "Enter password with length of at least 6\n";
-      if (hasSpace) errors += "Enter password without space\n";
-      if (!hasDigit) errors += "Enter at least one digit\n";
-      if (!hasLower) errors += "Enter at least one lowercase letter\n";
-      if (!hasUpper) errors += "Enter at least one Uppercase letter\n";
-      if (!hasSpecial) errors += "Enter at least one special character\n";
-      return errors;
+   static bool TryParsePwd (string pwd, out string errors) {
+      var sb = new StringBuilder ();
+      if (pwd.Length < 6) sb.AppendLine ("Password should have length of at least 6");
+      if (pwd.Any (char.IsWhiteSpace)) sb.AppendLine ("Password shouldn't have space");
+      if (!pwd.Any (char.IsDigit)) sb.AppendLine ("Password should have at least one digit");
+      if (!pwd.Any (char.IsLower))
+         sb.AppendLine ("Password should have at least one lowercase letter");
+      if (!pwd.Any (char.IsUpper))
+         sb.AppendLine ("Password should have at least one Uppercase letter");
+      if (!pwd.Any (c => !char.IsLetterOrDigit (c)))
+         sb.AppendLine ("Password should have at least one special character");
+      errors = sb.ToString ();
+      return string.IsNullOrEmpty (errors);
    }
 
    // Prints the message in the given colour
