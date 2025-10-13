@@ -11,25 +11,24 @@ namespace Training25;
 
 internal class Program {
    static void Main (string[] args) {
-      if (args.Length == 0) { WriteLine ("Enter the input in command prompt"); return; }
+      if (args.Length == 0) {
+         WriteLine ("Usage: Training25.exe <number>");
+         return;
+      }
       if (!int.TryParse (args[0], out int inp) || inp <= 0 || inp > 25) {
          WriteLine ("Enter a valid integer between 1 and 25.");
          return;
       }
-      NthArmstrong (inp);
+      WriteLine (NthArmstrong (inp));
    }
 
    // Prints the Nth armstrong number
-   static void NthArmstrong (int inp) {
-      int cnt = 0;
-      int num = 0;
+   static int NthArmstrong (int inp) {
+      int cnt = 0, num = 0;
       while (true) {
          if (IsArmstrong (num)) {
             cnt++;
-            if (cnt == inp) {
-               WriteLine (num);
-               break;
-            }
+            if (cnt == inp) return num;
          }
          num++;
       }
@@ -39,7 +38,14 @@ internal class Program {
    static bool IsArmstrong (int num) {
       string numStr = num.ToString ();
       int sum = 0;
-      foreach (char index in numStr) sum += (int)Math.Pow (index - '0', numStr.Length);
+      foreach (char index in numStr) sum += IntPow (index - '0', numStr.Length);
       return sum == num;
+   }
+
+   // Computes the power of a number in int
+   static int IntPow (int num, int exp) {
+      int res = 1;
+      for (int i = 0; i < exp; i++) res *= num;
+      return res;
    }
 }
