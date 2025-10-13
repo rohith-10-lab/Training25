@@ -22,7 +22,7 @@ internal class Program {
       WriteLine (NthArmstrong (inp));
    }
 
-   // Prints the Nth armstrong number
+   // Returns the Nth armstrong number
    static int NthArmstrong (int inp) {
       int cnt = 0, num = 0;
       while (true) {
