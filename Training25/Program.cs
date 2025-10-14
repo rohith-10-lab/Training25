@@ -31,8 +31,8 @@ internal class Program {
    // Checks whether a given number is armstrong or not
    static bool IsArmstrong (int num) {
       string numStr = num.ToString ();
-      int sum = 0;
-      foreach (char index in numStr) sum += PowerOf (index - '0', numStr.Length);
+      int sum = 0, len = numStr.Length;
+      foreach (char index in numStr) sum += PowerOf (index - '0', len);
       return sum == num;
    }
 
