@@ -21,18 +21,19 @@ internal class Program {
       string res = "";
       int len = inp.Length;
       for (int i = 0; i < len; i++) {
-         if (i < len - 1 && char.IsLower (inp[i]) && inp[i] == inp[i + 1]) i++;
+         if (i < len - 1 && inp[i] == inp[i + 1]) i++;
          else res += inp[i];
       }
       return (res == inp) ? res : RemoveAdjacent (res);
    }
 
-   // Returns valid string input, null or empty input is rejected
+   // Gets only letters as input
    static string GetInput () {
       while (true) {
-         Write ("Enter the string to be reduced: ");
-         string? inp = ReadLine ();
-         if (string.IsNullOrWhiteSpace (inp)) WriteLine ("Enter a valid input\n");
+         Write ("Enter a string containing only letters to be reduced: ");
+         string inp = (ReadLine () ?? string.Empty).ToLower ();
+         if (string.IsNullOrWhiteSpace (inp) || inp.Any (c => !char.IsLetter (c)))
+            WriteLine ("Enter a valid input\n");
          else return inp;
       }
    }
