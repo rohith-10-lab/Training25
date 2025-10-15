@@ -12,11 +12,12 @@ namespace Training25;
 internal class Program {
    static void Main () {
       string output = RemoveAdjacent (GetInput ());
-      WriteLine ($"Reduced string: {(output == "" ? "Empty String" : output)}");
+      WriteLine ($"Reduced string: {(string.IsNullOrEmpty (output) ? "Empty String" : output)}");
    }
 
-   // Removes adjacent lowercase letters in a string and returns the resultatnt string
+   // Removes adjacent lowercase letters in a string and returns the resultant string
    static string RemoveAdjacent (string inp) {
+      if (inp.Length < 2) return inp;
       string res = "";
       int len = inp.Length;
       for (int i = 0; i < len; i++) {
@@ -29,9 +30,9 @@ internal class Program {
    // Returns valid string input, null or empty input is rejected
    static string GetInput () {
       while (true) {
-         Write ("Enter a string of lowercase characters: ");
+         Write ("Enter the string to be reduced: ");
          string? inp = ReadLine ();
-         if (string.IsNullOrEmpty (inp)) WriteLine ("Enter a valid input\n");
+         if (string.IsNullOrWhiteSpace (inp)) WriteLine ("Enter a valid input\n");
          else return inp;
       }
    }
