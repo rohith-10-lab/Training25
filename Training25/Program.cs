@@ -17,12 +17,13 @@ internal class Program {
 
    // Removes adjacent lowercase letters in a string and returns the resultant string
    static string RemoveAdjacent (string inp) {
-      if (inp.Length < 2) return inp;
-      string res = "";
       int len = inp.Length;
+      if (len < 2) return inp;
+      string res = "";
       for (int i = 0; i < len; i++) {
-         if (i < len - 1 && inp[i] == inp[i + 1]) i++;
-         else res += inp[i];
+         char elem = inp[i];
+         if (i < len - 1 && elem == inp[i + 1]) i++;
+         else res += elem;
       }
       return (res == inp) ? res : RemoveAdjacent (res);
    }
