@@ -11,11 +11,9 @@ using System.Text;
 namespace Training25;
 
 internal class Program {
-   static void Main () {
-      WriteLine ($"The reversed string is: {ReverseStr (GetInput ())}");
-   }
+   static void Main () => WriteLine ($"The reversed string is: {ReverseStr (GetInput ())}");
 
-   // Gets only non-empty string from the user
+   // Gets only non-empty string from user
    static string GetInput () {
       while (true) {
          Write ("Enter the string to be reversed: ");
@@ -25,18 +23,16 @@ internal class Program {
       }
    }
 
-   // Reverses a string, maintaining spaces and casing
+   // Reverses a string, maintaining spaces and original casing
    static string ReverseStr (string inp) {
-      char[] chars = inp.Where (c => !char.IsWhiteSpace (c)).ToArray ();
-      Array.Reverse (chars);
+      char[] chars = inp.Where (c => !char.IsWhiteSpace (c)).Reverse ().ToArray ();
       var res = new StringBuilder ();
       int idx = 0;
       foreach (char c in inp) {
          if (c == ' ') res.Append (' ');
          else {
             char newChar = chars[idx];
-            if (char.IsUpper (c)) res.Append (char.ToUpper (newChar));
-            else res.Append (char.ToLower (newChar));
+            res.Append (char.IsUpper (c) ? char.ToUpper (newChar) : char.ToLower (newChar));
             idx++;
          }
       }
