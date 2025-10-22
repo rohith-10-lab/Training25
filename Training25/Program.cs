@@ -29,9 +29,12 @@ internal class Program {
       var res = new StringBuilder ();
       int idx = 0;
       foreach (char c in inp) {
-         char nxtChar = char.IsWhiteSpace (c) ? '\0' : chars[idx++];
-         res.Append (char.IsWhiteSpace (c) ? c
-            : (char.IsUpper (c) ? char.ToUpper (nxtChar) : char.ToLower (nxtChar)));
+         char nxtChar = ' ';
+         if (!char.IsWhiteSpace (c)) {
+            nxtChar = chars[idx++];
+            nxtChar = char.IsUpper (c) ? char.ToUpper (nxtChar) : char.ToLower (nxtChar);
+         }
+         res.Append (nxtChar);
       }
       return res.ToString ();
    }
