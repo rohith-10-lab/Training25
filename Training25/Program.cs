@@ -28,9 +28,11 @@ internal class Program {
       char[] chars = [.. inp.Where (c => !char.IsWhiteSpace (c)).Reverse ()];
       var res = new StringBuilder ();
       int idx = 0;
-      foreach (char c in inp)
+      foreach (char c in inp) {
+         char nxtChar = char.IsWhiteSpace (c) ? '\0' : chars[idx++];
          res.Append (char.IsWhiteSpace (c) ? c
-            : (char.IsUpper (c) ? char.ToUpper (chars[idx++]) : char.ToLower (chars[idx++])));
+            : (char.IsUpper (c) ? char.ToUpper (nxtChar) : char.ToLower (nxtChar)));
+      }
       return res.ToString ();
    }
 }
