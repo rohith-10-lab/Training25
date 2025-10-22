@@ -25,17 +25,12 @@ internal class Program {
 
    // Reverses a string, maintaining spaces and original casing
    static string ReverseStr (string inp) {
-      char[] chars = inp.Where (c => !char.IsWhiteSpace (c)).Reverse ().ToArray ();
+      char[] chars = [.. inp.Where (c => !char.IsWhiteSpace (c)).Reverse ()];
       var res = new StringBuilder ();
       int idx = 0;
-      foreach (char c in inp) {
-         if (c == ' ') res.Append (' ');
-         else {
-            char newChar = chars[idx];
-            res.Append (char.IsUpper (c) ? char.ToUpper (newChar) : char.ToLower (newChar));
-            idx++;
-         }
-      }
+      foreach (char c in inp)
+         res.Append (char.IsWhiteSpace (c) ? c
+            : (char.IsUpper (c) ? char.ToUpper (chars[idx++]) : char.ToLower (chars[idx++])));
       return res.ToString ();
    }
 }
