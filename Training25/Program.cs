@@ -20,7 +20,7 @@ internal class Program {
    // Converts given decimal number to binary or hexadecimal using bitwise operators
    static string Conversion (int num, int baseVal) {
       const string DIGITS = "0123456789ABCDEF";
-      if (baseVal is not (2 or 16)) WriteLine ("Base must be 2 or 16.");
+      if (baseVal is not (2 or 16)) throw new ArgumentException ("Base must be 2 or 16.");
       if (num == 0) return "0";
       int bitsPerDigit = baseVal == 2 ? 1 : 4;
       // Mask to extract the lowest 'bitsPerDigit' bits from the number
