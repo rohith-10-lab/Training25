@@ -5,6 +5,7 @@
 // Program.cs
 // Program to convert given decimal number to its specified base
 // ------------------------------------------------------------------------------------------------
+using System.Text;
 using static System.Console;
 
 namespace Training25;
@@ -16,27 +17,22 @@ internal class Program {
       WriteLine ($"Hex: {Conversion (inp, 16)}");
    }
 
-   // Converts given decimal to its specified base
-   static string Conversion (int num, uint type) {
+   // Converts given decimal number to binary or hexadecimal using bitwise operators
+   static string Conversion (int num, int baseVal) {
+      const string DIGITS = "0123456789ABCDEF";
+      if (baseVal is not (2 or 16)) WriteLine ("Base must be 2 or 16.");
       if (num == 0) return "0";
-      string defValues = "0123456789ABCDEF", res = "";
-      uint n = (uint)num;
-      while (n > 0) {
-         res = defValues[(int)(n % type)] + res;
-         n /= type;
+      int bitsPerDigit = baseVal == 2 ? 1 : 4;
+      // Mask to extract the lowest 'bitsPerDigit' bits from the number
+      int mask = (1 << bitsPerDigit) - 1;
+      var res = new StringBuilder ();
+      // Extract digits one by one from least significant to most significant
+      while (num != 0) {
+         res.Insert (0, DIGITS[num & mask]);
+         // Performs logical right shift to move to the next group of bits and clears the top bits
+         num = (num >> bitsPerDigit) & ~(-1 << (32 - bitsPerDigit));
       }
-      if (num < 0) {
-         if (type == 2) {
-            // Trim leading 1s but keep the last 1 before first 0
-            int firstZero = res.IndexOf ('0');
-            res = res.Substring (firstZero - 1);
-         } else if (type == 16) {
-            // Trim leading F's but keep the last F before first non-F
-            int firstNonF = res.IndexOfAny ("0123456789ABCDE".ToCharArray ());
-            res = res.Substring (firstNonF - 1);
-         }
-      }
-      return res;
+      return res.ToString ();
    }
 
    // Gets only integer as input from user
