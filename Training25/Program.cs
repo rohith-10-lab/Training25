@@ -25,8 +25,16 @@ internal class Program {
 
    // Returns the most frequent character in the string and its count through out parameter
    static char MostFrequentChar (string inp, out int cnt) {
-      var firstMax = inp.ToLower ().GroupBy (c => c).MaxBy (g => g.Count ())!;
-      cnt = firstMax.Count ();
-      return firstMax.Key;
+      var freq = new Dictionary<char, int> ();
+      cnt = 0;
+      char maxChar = '\0';
+      foreach (char c in inp.ToLower ()) {
+         if (!freq.TryAdd (c, 1)) freq[c]++;
+         if (freq[c] > cnt) {
+            cnt = freq[c];
+            maxChar = c;
+         }
+      }
+      return maxChar;
    }
 }
