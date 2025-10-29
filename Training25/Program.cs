@@ -10,19 +10,19 @@ using System.Text;
 namespace Training25;
 internal class Program {
    static void Main () {
-      int inp = 52;
+      int inp = 24;
       char[] chars = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S',
       'T','U','V','W', 'X','Y','Z'};
       int len = chars.Length;
       var res = new StringBuilder ();
       if (inp > len) {
          res.Append (chars [0]);
-         int rem = inp / len;
-         while (rem > len) {
+         int extra = inp / len;
+         while (extra > len) {
             res.Append ((chars[0]));
-            rem = rem / len;
+            extra = extra / len;
          }
-         res.Append (chars[rem - 1]);
+         res.Append (chars[extra - 1]);
          Console.WriteLine (res.ToString ());
       }
       else Console.WriteLine (chars[inp-1]);
