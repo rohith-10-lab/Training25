@@ -17,20 +17,19 @@ internal class Program {
    static int GetInput () {
       while (true) {
          Write ("Enter the number of rows (1-20): ");
-         if (int.TryParse (ReadLine (), out int numRows) && numRows <= 20 && numRows > 0)
-            return numRows;
+         if (int.TryParse (ReadLine (), out int rows) && rows <= 20 && rows > 0) return rows;
          else WriteLine ("Enter a valid input.\n");
       }
    }
 
    // Returns Pascal's triangle as a string
-   static string PascalTriangle (int numRows) {
+   static string PascalTriangle (int rows) {
       var res = new StringBuilder ();
       int[] prevRow = [1];
       const int COLWIDTH = 6;
-      for (int row = 0; row < numRows; row++) {
+      for (int row = 0; row < rows; row++) {
          int[] currRow = new int[row + 1];
-         res.Append (new string (' ', (numRows - row) * COLWIDTH / 2)); // Leading spaces
+         res.Append (new string (' ', (rows - row) * COLWIDTH / 2)); // Leading spaces
          for (int col = 0; col <= row; col++) {
             currRow[col] = (col == 0 || col == row) ? 1 : prevRow[col - 1] + prevRow[col];
             res.Append ($"{currRow[col],COLWIDTH}");
