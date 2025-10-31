@@ -25,17 +25,17 @@ internal class Program {
    // Returns Pascal's triangle as a string
    static string PascalTriangle (int rows) {
       var res = new StringBuilder ();
-      int[] prevRow = [1];
+      int[] previous = [1];
       const int COLWIDTH = 6;
       for (int row = 0; row < rows; row++) {
-         int[] currRow = new int[row + 1];
+         int[] current = new int[row + 1];
          res.Append (new string (' ', (rows - row) * COLWIDTH / 2)); // Leading spaces
          for (int col = 0; col <= row; col++) {
-            currRow[col] = (col == 0 || col == row) ? 1 : prevRow[col - 1] + prevRow[col];
-            res.Append ($"{currRow[col],COLWIDTH}");
+            current[col] = (col == 0 || col == row) ? 1 : previous[col - 1] + previous[col];
+            res.Append ($"{current[col], COLWIDTH}");
          }
          res.AppendLine ();
-         prevRow = currRow;
+         previous = current;
       }
       return res.ToString ();
    }
