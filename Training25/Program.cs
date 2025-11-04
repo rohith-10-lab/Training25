@@ -10,10 +10,10 @@ using static System.Console;
 namespace Training25;
 
 internal class Program {
-   static void Main () => WriteLine ($"{SmallestTransform (Getinput ())} steps");
+   static void Main () => WriteLine ($"{SmallestTransform (GetInput ())} steps");
 
    // Gets only integer as input from the user
-   static int Getinput () {
+   static int GetInput () {
       while (true) {
          Write ("Enter the number to transform: ");
          if (int.TryParse (ReadLine (), out int inp) && inp > 0) return inp;
@@ -24,7 +24,7 @@ internal class Program {
    // Returns the minimum steps to make all the digits of a number identical
    static int SmallestTransform (int inp) {
       string inpStr = inp.ToString ();
-      string sort = string.Concat (inpStr.OrderBy (c => c));
+      string sort = string.Concat (inpStr.Order ());
       int median = sort[inpStr.Length / 2] - '0', sum = 0;
       foreach (char c in inpStr) sum += Math.Abs (c - '0' - median);
       return sum;
