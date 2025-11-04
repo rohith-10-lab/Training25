@@ -3,14 +3,15 @@
 // Copyright (c) Metamation India.
 // ------------------------------------------------------------------
 // Program.cs
-// Program to return the minimum steps to make all the digits of a number identical.
+// Program to find the minimum steps and final number with identical digits.
 // ------------------------------------------------------------------------------------------------
 using static System.Console;
 
 namespace Training25;
 
 internal class Program {
-   static void Main () => WriteLine ($"{SmallestTransform (GetInput ())} steps");
+   static void Main () => WriteLine ($"{SmallestTransform (GetInput (), out string num)} " +
+      $"steps -> {num}");
 
    // Gets only integer as input from the user
    static int GetInput () {
@@ -21,12 +22,17 @@ internal class Program {
       }
    }
 
-   // Returns the minimum steps to make all the digits of a number identical
-   static int SmallestTransform (int inp) {
-      string inpStr = inp.ToString ();
-      string sort = string.Concat (inpStr.Order ());
-      int median = sort[inpStr.Length / 2] - '0', sum = 0;
-      foreach (char c in inpStr) sum += Math.Abs (c - '0' - median);
+   // Returns the minimum steps and resulting number to make all the digits of a number identical
+   static int SmallestTransform (int inp, out string transformed) {
+      List<int> digits = [];
+      for (; inp > 0; inp /= 10) digits.Add (inp % 10);
+      List<int> sorted = [.. digits];
+      sorted.Sort ();
+      int median = sorted[sorted.Count / 2];
+      digits.Reverse ();
+      int sum = 0;
+      for (int i = 0; i < digits.Count; i++) sum += Math.Abs (digits[i] - median);
+      transformed = new ((char)(median + '0'), digits.Count);
       return sum;
    }
 }
