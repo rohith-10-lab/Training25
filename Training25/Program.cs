@@ -27,8 +27,8 @@ internal class Program {
       List<int> digits = new (10);
       for (int n = inp; n > 0; n /= 10) digits.Add (n % 10);
       digits.Sort ();
-      int len = digits.Count, median = digits[len / 2], sum = 0;
-      foreach (int d in digits) sum += Math.Abs (d - median);
+      int len = digits.Count, median = digits[len / 2];
+      int sum = digits.Sum (d => Math.Abs (d - median));
       transformed = new ((char)(median + '0'), len);
       return sum;
    }
