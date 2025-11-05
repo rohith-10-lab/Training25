@@ -24,15 +24,12 @@ internal class Program {
 
    // Returns the minimum steps and resulting number to make all the digits of a number identical
    static int SmallestTransform (int inp, out string transformed) {
-      List<int> digits = [];
-      for (; inp > 0; inp /= 10) digits.Add (inp % 10);
-      List<int> sorted = [.. digits];
-      sorted.Sort ();
-      int median = sorted[sorted.Count / 2];
-      digits.Reverse ();
-      int sum = 0;
-      for (int i = 0; i < digits.Count; i++) sum += Math.Abs (digits[i] - median);
-      transformed = new ((char)(median + '0'), digits.Count);
+      List<int> digits = new (10);
+      for (int n = inp; n > 0; n /= 10) digits.Add (n % 10);
+      digits.Sort ();
+      int len = digits.Count, median = digits[len / 2], sum = 0;
+      foreach (int d in digits) sum += Math.Abs (d - median);
+      transformed = new ((char)(median + '0'), len);
       return sum;
    }
 }
