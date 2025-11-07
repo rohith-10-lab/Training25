@@ -25,25 +25,26 @@ internal class Program {
          WriteLine ("Enter a valid input.\n");
       }
       while (true) {
-         Write ("Enter mode (words/roman): ");
-         string mode = (ReadLine () ?? "").Trim ().ToLower ();
-         if (mode is "words" or "roman") return (num, mode);
-         WriteLine ("Enter a valid input.\n");
+         Write ("Enter mode (W)ords/(R)oman: ");
+         var mode = ReadKey ().Key;
+         if (mode == ConsoleKey.W) return (num, "words");
+         if (mode == ConsoleKey.R) return (num, "roman");
+         WriteLine ("\nInvalid mode. Press W for words or R for roman.\n");
       }
    }
 
    // Converts the given number to words
    static string ToWords (int num) {
-      string[] ones = { "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+      string[] ones = [ "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
                      "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
-                     "Seventeen","Eighteen", "Nineteen" };
-      string[] tens = { "", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty",
-                     "Ninety" };
-      if (num < 20) return ones[num];
-      if (num < 100) return tens[num / 10] + (num % 10 > 0 ? " " + ones[num % 10] : "");
-      string hundreds = ones[num / 100] + " Hundred";
-      if (num % 100 > 0) hundreds += " " + ToWords (num % 100);
-      return hundreds;
+                     "Seventeen","Eighteen", "Nineteen" ];
+      if (num < 20) return ones[num - 1];
+      string[] tens = [ "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty",
+                     "Ninety" ];
+      if (num < 100) return num % 10 > 0 ? $"{tens[num / 10 - 2]} {ones[num % 10 - 1]}" :
+                            $"{tens[num / 10 - 2]}";
+      string hundreds = $"{ones[num / 100 - 1]} Hundred";
+      return num % 100 > 0 ? $"{hundreds} {ToWords (num % 100)}" : hundreds;
    }
 
    // Converts the given number to roman numbers
