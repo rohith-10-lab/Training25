@@ -17,7 +17,7 @@ internal class Program {
    }
 
    // Gets a number and mode (words/roman) as user input
-   static (int num, string mode) GetInput () {
+   static (int Num, string Mode) GetInput () {
       int num;
       while (true) {
          Write ("Enter a number between 1 and 999: ");
