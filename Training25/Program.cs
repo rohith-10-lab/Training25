@@ -12,8 +12,9 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      var (num, mode) = GetInput ();
-      WriteLine ($"\n{num} -> {(mode == "words" ? ToWords (num) : ToRoman (num))}");
+      var inp = GetInput ();
+      var num = inp.Num;
+      WriteLine ($"\n{num} -> {(inp.Mode == "words" ? ToWords (num) : ToRoman (num))}");
    }
 
    // Gets a number and mode (words/roman) as user input
