@@ -36,22 +36,22 @@ internal class Program {
    // Converts the given number to words
    static string ToWords (int num) {
       string[] ones = [ "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
-                     "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
-                     "Seventeen","Eighteen", "Nineteen" ];
+                        "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
+                        "Seventeen","Eighteen", "Nineteen" ];
       if (num < 20) return ones[num - 1];
       string[] tens = [ "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty",
-                     "Ninety" ];
+                        "Ninety" ];
       if (num < 100) return num % 10 > 0 ? $"{tens[num / 10 - 2]} {ones[num % 10 - 1]}" :
-                            $"{tens[num / 10 - 2]}";
+                         $"{tens[num / 10 - 2]}";
       string hundreds = $"{ones[num / 100 - 1]} Hundred";
       return num % 100 > 0 ? $"{hundreds} {ToWords (num % 100)}" : hundreds;
    }
 
    // Converts the given number to roman numbers
    static string ToRoman (int num) {
-      var map = new List<KeyValuePair<int, string>> { new(900, "CM"), new(500, "D"),
-        new(400, "CD"), new(100, "C"), new(90, "XC"), new(50, "L"), new(40, "XL"), new(10, "X"),
-        new(9, "IX"), new(5, "V"), new(4, "IV"), new(1, "I")
+      var map = new Dictionary<int, string> {
+         [1000] = "M", [900] = "CM", [500] = "D", [400] = "CD", [100] = "C", [90] = "XC",
+         [50] = "L", [40] = "XL", [10] = "X", [9] = "IX", [5] = "V", [4] = "IV", [1] = "I"
       };
       var res = new StringBuilder ();
       foreach (var pair in map) {
