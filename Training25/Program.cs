@@ -49,13 +49,15 @@ internal class Program {
 
    // Converts the given number to roman numbers
    static string ToRoman (int num) {
-      int[] values = [900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
-      string[] symbols = ["CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"];
+      var map = new List<KeyValuePair<int, string>> { new(900, "CM"), new(500, "D"),
+        new(400, "CD"), new(100, "C"), new(90, "XC"), new(50, "L"), new(40, "XL"), new(10, "X"),
+        new(9, "IX"), new(5, "V"), new(4, "IV"), new(1, "I")
+      };
       var res = new StringBuilder ();
-      for (int i = 0; i < values.Length; i++) {
-         while (num >= values[i]) {
-            num -= values[i];
-            res.Append (symbols[i]);
+      foreach (var pair in map) {
+         while (num >= pair.Key) {
+            num -= pair.Key;
+            res.Append (pair.Value);
          }
       }
       return res.ToString ();
