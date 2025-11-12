@@ -26,10 +26,11 @@ internal class Program {
       }
       while (true) {
          Write ("Enter mode (W)ords/(R)oman: ");
-         var mode = ReadKey ().Key;
-         if (mode == ConsoleKey.W) return (num, "words");
-         if (mode == ConsoleKey.R) return (num, "roman");
-         WriteLine ("\nInvalid mode. Press W for words or R for roman.\n");
+         switch (ReadKey ().Key) {
+            case ConsoleKey.W: return (num, "words");
+            case ConsoleKey.R: return (num, "roman");
+            default: WriteLine ("\nInvalid mode. Press W for words or R for roman.\n"); break;
+         }
       }
    }
 
@@ -41,20 +42,18 @@ internal class Program {
       if (num < 20) return ones[num - 1];
       string[] tens = [ "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty",
                         "Ninety" ];
-      if (num < 100) return num % 10 > 0 ? $"{tens[num / 10 - 2]} {ones[num % 10 - 1]}" :
-                         $"{tens[num / 10 - 2]}";
+      int unit = num % 10;
+      var tenWord = tens[num / 10 - 2];
+      if (num < 100) return unit > 0 ? $"{tenWord} {ones[unit - 1]}" : tenWord;
       string hundreds = $"{ones[num / 100 - 1]} Hundred";
-      return num % 100 > 0 ? $"{hundreds} {ToWords (num % 100)}" : hundreds;
+      int rem = num % 100;
+      return rem > 0 ? $"{hundreds} {ToWords (rem)}" : hundreds;
    }
 
    // Converts the given number to roman numbers
    static string ToRoman (int num) {
-      var map = new Dictionary<int, string> {
-         [1000] = "M", [900] = "CM", [500] = "D", [400] = "CD", [100] = "C", [90] = "XC",
-         [50] = "L", [40] = "XL", [10] = "X", [9] = "IX", [5] = "V", [4] = "IV", [1] = "I"
-      };
       var res = new StringBuilder ();
-      foreach (var pair in map) {
+      foreach (var pair in sMap) {
          while (num >= pair.Key) {
             num -= pair.Key;
             res.Append (pair.Value);
@@ -62,4 +61,8 @@ internal class Program {
       }
       return res.ToString ();
    }
+   static Dictionary<int, string> sMap = new () {
+      [1000] = "M", [900] = "CM", [500] = "D", [400] = "CD", [100] = "C", [90] = "XC",
+      [50] = "L", [40] = "XL", [10] = "X", [9] = "IX", [5] = "V", [4] = "IV", [1] = "I"
+   };
 }
