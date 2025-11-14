@@ -11,15 +11,16 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      var (array, spclChar, order) = GetInput ();
-      if (order == 'x') WriteLine ($"\n\nResult: {ProcessInput (array, spclChar)}");
-      else WriteLine ($"\n\nResult: {ProcessInput (array, spclChar, order == 'a')}");
+      var (array, spclChar, isOrderChosen, isAscending) = GetInput ();
+      if (isOrderChosen) WriteLine ($"\nResult: {ProcessInput (array, spclChar, isAscending)}");
+      else WriteLine ($"\nResult: {ProcessInput (array, spclChar)}");
    }
 
    // Gets and validates the character array, special character and sort order from user
-   static (char[] a, char s, char o) GetInput () {
+   static (char[] a, char s, bool isOrderChosen, bool isAscending) GetInput () {
       char[] array;
-      char spclChar, order;
+      char spclChar;
+      bool isAscending = true, isOrderChosen;
       for (; ; ) {
          Write ("Enter letters separated by commas without spaces (e.g., a,b,c): ");
          string? inp1 = ReadLine ()?.ToLower ();
@@ -42,19 +43,27 @@ internal class Program {
          break;
       }
       for (; ; ) {
-         Write ("Press (A)scending / (D)escending / Anyother key for default: ");
+         Write ("Press (A)scending / (D)escending / Any key for default: ");
          ConsoleKey key = ReadKey ().Key;
-         if (key == ConsoleKey.A) { order = 'a'; break; }
-         if (key == ConsoleKey.D) { order = 'd'; break; }
-         order = 'x';
+         if (key == ConsoleKey.A) {
+            isAscending = true;
+            isOrderChosen = true;
+            break;
+         }
+         if (key == ConsoleKey.D) {
+            isAscending = false;
+            isOrderChosen = true;
+            break;
+         }
+         isOrderChosen = false;
          break;
       }
-      return (array, spclChar, order);
+      return (array, spclChar, isOrderChosen, isAscending);
    }
 
    // Sorts the array based on order and adds the special character at the end
-   static string ProcessInput (char[] a, char s, bool ascending = true) =>
-       string.Join (", ", (ascending ? a.Where (ch => ch != s).OrderBy (ch => ch)
-                                        : a.Where (ch => ch != s).OrderByDescending (ch => ch))
-                                        .Concat (a.Where (ch => ch == s)));
+   static string ProcessInput (char[] a, char s, bool isAscending = true) =>
+       string.Join (", ", (isAscending ? a.Where (ch => ch != s).OrderBy (ch => ch)
+                                       : a.Where (ch => ch != s).OrderByDescending (ch => ch))
+                                       .Concat (a.Where (ch => ch == s)));
 }
