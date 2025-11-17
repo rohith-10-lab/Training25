@@ -11,59 +11,48 @@ namespace Training25;
 
 internal class Program {
    static void Main () {
-      var (array, spclChar, isOrderChosen, isAscending) = GetInput ();
-      if (isOrderChosen) WriteLine ($"\nResult: {ProcessInput (array, spclChar, isAscending)}");
-      else WriteLine ($"\nResult: {ProcessInput (array, spclChar)}");
+      var (array, spclChar, isAscending) = GetInput ();
+      WriteLine ($"\nResult: {ProcessInput (array, spclChar, isAscending)}");
    }
 
    // Gets and validates the character array, special character and sort order from user
-   static (char[] a, char s, bool isOrderChosen, bool isAscending) GetInput () {
+   static (char[] A, char S, bool IsAscending) GetInput () {
       char[] array;
       char spclChar;
-      bool isAscending = true, isOrderChosen;
-      for (; ; ) {
+      // Gets and validates the comma separated characters
+      while (true) {
          Write ("Enter letters separated by commas without spaces (e.g., a,b,c): ");
          string? inp1 = ReadLine ()?.ToLower ();
          if (string.IsNullOrEmpty (inp1)) { WriteLine ("Input cannot be empty.\n"); continue; }
          var parts = inp1.Split (',');
-         if (parts.Any (p => string.IsNullOrWhiteSpace (p) || p.Length != 1
-                                                           || !char.IsLetter (p[0]))) {
+         if (parts.Any (IsInValidChar)) {
             WriteLine ("Enter only single letters separated by commas.\n"); continue;
          }
          array = [.. parts.Select (p => p[0])];
          break;
       }
-      for (; ; ) {
+      // Gets and validates the special character
+      while (true) {
          Write ("Enter special character: ");
          string? inp2 = ReadLine ()?.Trim ().ToLower ();
-         if (string.IsNullOrEmpty (inp2) || inp2.Length != 1 || !char.IsLetter (inp2[0])) {
-            WriteLine ("Enter exactly one valid letter.\n"); continue;
-         }
-         spclChar = inp2[0];
+         if (IsInValidChar (inp2)) { WriteLine ("Enter exactly one valid letter.\n"); continue; }
+         spclChar = inp2![0];
          break;
       }
-      for (; ; ) {
-         Write ("Press (A)scending / (D)escending / Any key for default: ");
-         ConsoleKey key = ReadKey ().Key;
-         if (key == ConsoleKey.A) {
-            isAscending = true;
-            isOrderChosen = true;
-            break;
-         }
-         if (key == ConsoleKey.D) {
-            isAscending = false;
-            isOrderChosen = true;
-            break;
-         }
-         isOrderChosen = false;
-         break;
-      }
-      return (array, spclChar, isOrderChosen, isAscending);
+      // Determine sort order with a single key press
+      Write ("Press (A)scending / (D)escending: ");
+      return (array, spclChar, ReadKey ().Key != ConsoleKey.D);
    }
 
+   // Checks whether the input is invalid (null, wrong length, or non-letter).
+   static bool IsInValidChar (string? str)
+      => string.IsNullOrWhiteSpace (str) || str.Length != 1 || !char.IsLetter (str[0]);
+
    // Sorts the array based on order and adds the special character at the end
-   static string ProcessInput (char[] a, char s, bool isAscending = true) =>
-       string.Join (", ", (isAscending ? a.Where (ch => ch != s).OrderBy (ch => ch)
-                                       : a.Where (ch => ch != s).OrderByDescending (ch => ch))
-                                       .Concat (a.Where (ch => ch == s)));
+   static string ProcessInput (char[] a, char s, bool isAscending = true) {
+      var filtered = a.Where (ch => ch != s);
+      var sorted = isAscending ? filtered.Order ()
+                               : filtered.OrderByDescending (ch => ch);
+      return string.Join (", ", sorted.Concat (a.Where (ch => ch == s)));
+   }
 }
