@@ -16,23 +16,23 @@ internal class Program {
       WriteLine (PrintBoard (Pieces ()));
    }
    const int SIZE = 8;
-   static readonly string[] blackSpecial = ["\u265C", "\u265E", "\u265D", "\u265B",
+   static readonly string[] sBlackSpecial = ["\u265C", "\u265E", "\u265D", "\u265B",
                                             "\u265A", "\u265D", "\u265E", "\u265C"];
-   static readonly string[] whiteSpecial = ["\u2656", "\u2658", "\u2657", "\u2655",
+   static readonly string[] sWhiteSpecial = ["\u2656", "\u2658", "\u2657", "\u2655",
                                             "\u2654", "\u2657", "\u2658", "\u2656"];
-   static readonly string blackPawn = "\u265F";
-   static readonly string whitePawn = "\u2659";
+   static readonly string sBlackPawn = "\u265F";
+   static readonly string sWhitePawn = "\u2659";
 
    // Returns 8x8 array with chess piece positions
    static string[,] Pieces () {
       string[,] board = new string[SIZE, SIZE];
       for (int row = 0; row < SIZE; row++) {
          for (int col = 0; col < SIZE; col++) {
-            if (row == 0) board[row, col] = blackSpecial[col];
-            else if (row == 1) board[row, col] = blackPawn;
+            if (row == 0) board[row, col] = sBlackSpecial[col];
+            else if (row == 1) board[row, col] = sBlackPawn;
             else if (row >= 2 && row <= 5) board[row, col] = " ";
-            else if (row == 6) board[row, col] = whitePawn;
-            else board[row, col] = whiteSpecial[col];
+            else if (row == 6) board[row, col] = sWhitePawn;
+            else board[row, col] = sWhiteSpecial[col];
          }
       }
       return board;
