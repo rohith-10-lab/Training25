@@ -20,23 +20,21 @@ internal class Program {
                                             "\u265A", "\u265D", "\u265E", "\u265C"];
    static readonly string[] whiteSpecial = ["\u2656", "\u2658", "\u2657", "\u2655",
                                             "\u2654", "\u2657", "\u2658", "\u2656"];
-   static readonly string BlackPawn = "\u265F";
-   static readonly string WhitePawn = "\u2659";
+   static readonly string blackPawn = "\u265F";
+   static readonly string whitePawn = "\u2659";
 
    // Returns 8x8 array with chess piece positions
    static string[,] Pieces () {
       string[,] board = new string[SIZE, SIZE];
-      // Row 0 – Black’s special pieces
-      for (int col = 0; col < SIZE; col++) board[0, col] = blackSpecial[col];
-      // Row 1 – Black pawns
-      for (int col = 0; col < SIZE; col++) board[1, col] = BlackPawn;
-      // Rows 2–5 – empty squares
-      for (int row = 2; row <= 5; row++)
-         for (int col = 0; col < SIZE; col++) board[row, col] = " ";
-      // Row 6 – White pawns
-      for (int col = 0; col < SIZE; col++) board[6, col] = WhitePawn;
-      // Row 7 – White’s special pieces
-      for (int col = 0; col < SIZE; col++) board[7, col] = whiteSpecial[col];
+      for (int row = 0; row < SIZE; row++) {
+         for (int col = 0; col < SIZE; col++) {
+            if (row == 0) board[row, col] = blackSpecial[col];
+            else if (row == 1) board[row, col] = blackPawn;
+            else if (row >= 2 && row <= 5) board[row, col] = " ";
+            else if (row == 6) board[row, col] = whitePawn;
+            else board[row, col] = whiteSpecial[col];
+         }
+      }
       return board;
    }
 
