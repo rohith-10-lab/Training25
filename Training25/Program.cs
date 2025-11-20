@@ -44,8 +44,8 @@ internal class Program {
             sb.Append (BORDER);
             for (int col = 0; col < SIZE; col++) {
                // 2 spaces + hair space + piece + 3 spaces + border
-               if (sub == 1) sb.Append ("  " + "\u200A" + board[row, col] + "   " + BORDER);
-               else sb.Append ("       " + BORDER);  // 7 spaces + border
+               if (sub == 1) sb.Append ($"  \u200A{board[row, col]}   {BORDER}");
+               else sb.Append ($"       {BORDER}"); // 7 spaces + border
             }
             sb.AppendLine ();
          }
