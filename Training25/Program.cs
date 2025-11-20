@@ -24,9 +24,9 @@ internal class Program {
             board[row, col] = row switch {
                0 => sBlackSpecial[col],
                1 => BLACKPAWN,
-               >= 2 and <= 5 => " ",
                6 => WHITEPAWN,
-               _ => sWhiteSpecial[col]
+               7 => sWhiteSpecial[col],
+               _ => " "
             };
          }
       }
@@ -36,21 +36,30 @@ internal class Program {
    // Returns the chessboard with pieces
    static string PrintBoard (string[,] board) {
       var sb = new StringBuilder ();
-      var segments = Enumerable.Repeat ("\u2500\u2500\u2500", SIZE);
-      string mid = "\u251C" + string.Join ("\u253C", segments) + "\u2524";
-      // Top part of board
-      sb.AppendLine ("\u250C" + string.Join ("\u252C", segments) + "\u2510");
+      var segments = Enumerable.Repeat ("──────", SIZE);
+      string mid = "├" + string.Join ("┼", segments) + "┤";
+      // Top row
+      sb.AppendLine ("┌" + string.Join ("┬", segments) + "┐");
       for (int row = 0; row < SIZE; row++) {
-         sb.Append (BORDER);
-         for (int col = 0; col < SIZE; col++) sb.Append ($" {board[row, col]} {BORDER}");
-         sb.AppendLine ();
-         // Middle part of board
+         // For each of the 3 sub-rows in a cell
+         for (int sub = 0; sub < 3; sub++) {
+            sb.Append (BORDER);
+            for (int col = 0; col < SIZE; col++) {
+               string cell = sub switch {
+                  1 => "  " + board[row, col] + "   ",   // Piece row (centered)
+                  _ => "      "                          // Padding row
+               };
+               sb.Append (cell + BORDER);
+            }
+            sb.AppendLine ();
+         }
          if (row < SIZE - 1) sb.AppendLine (mid);
       }
-      // Bottom part of board
-      sb.AppendLine ("\u2514" + string.Join ("\u2534", segments) + "\u2518");
+      // Bottom row
+      sb.AppendLine ("└" + string.Join ("┴", segments) + "┘");
       return sb.ToString ();
    }
+
    const int SIZE = 8;
    static readonly string[] sBlackSpecial = ["\u265C", "\u265E", "\u265D", "\u265B",
                                             "\u265A", "\u265D", "\u265E", "\u265C"];
