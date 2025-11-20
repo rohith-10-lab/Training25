@@ -36,27 +36,23 @@ internal class Program {
    // Returns the chessboard with pieces
    static string PrintBoard (string[,] board) {
       var sb = new StringBuilder ();
-      var segments = Enumerable.Repeat ("──────", SIZE);
-      string mid = "├" + string.Join ("┼", segments) + "┤";
+      string mid = "├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤";
       // Top row
-      sb.AppendLine ("┌" + string.Join ("┬", segments) + "┐");
+      sb.AppendLine ("┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐");
       for (int row = 0; row < SIZE; row++) {
-         // For each of the 3 sub-rows in a cell
          for (int sub = 0; sub < 3; sub++) {
             sb.Append (BORDER);
             for (int col = 0; col < SIZE; col++) {
-               string cell = sub switch {
-                  1 => "  " + board[row, col] + "   ",   // Piece row (centered)
-                  _ => "      "                          // Padding row
-               };
-               sb.Append (cell + BORDER);
+               // 2 spaces + hair space + piece + 3 spaces + border
+               if (sub == 1) sb.Append ("  " + "\u200A" + board[row, col] + "   " + BORDER);
+               else sb.Append ("       " + BORDER);  // 7 spaces + border
             }
             sb.AppendLine ();
          }
          if (row < SIZE - 1) sb.AppendLine (mid);
       }
       // Bottom row
-      sb.AppendLine ("└" + string.Join ("┴", segments) + "┘");
+      sb.AppendLine ("└───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘");
       return sb.ToString ();
    }
 
