@@ -36,10 +36,12 @@ internal class Program {
    // Returns the chessboard with pieces
    static string PrintBoard (string[,] board) {
       var sb = new StringBuilder ();
-      string mid = "├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤";
+      const string MID = "├───────┼───────┼───────┼───────┼───────┼───────┼───────┼───────┤";
       // Top row
       sb.AppendLine ("┌───────┬───────┬───────┬───────┬───────┬───────┬───────┬───────┐");
       for (int row = 0; row < SIZE; row++) {
+         // Each row is divided into 3 sub rows,
+         // sub: 0 -> top padding, 1 -> piece row, 2-> bottom padding
          for (int sub = 0; sub < 3; sub++) {
             sb.Append (BORDER);
             for (int col = 0; col < SIZE; col++) {
@@ -49,7 +51,7 @@ internal class Program {
             }
             sb.AppendLine ();
          }
-         if (row < SIZE - 1) sb.AppendLine (mid);
+         if (row < SIZE - 1) sb.AppendLine (MID);
       }
       // Bottom row
       sb.AppendLine ("└───────┴───────┴───────┴───────┴───────┴───────┴───────┴───────┘");
