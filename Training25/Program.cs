@@ -83,7 +83,7 @@ class MyList<T> {
       return true;
    }
 
-   /// <summary>Restores the initial capacity and resets the list to empty</summary>
+   /// <summary>Clears all stored elements while keeping the current capacity unchanged</summary>
    public void Clear () {
       Array.Clear (mArray, 0, mCnt);
       mCnt = 0;
@@ -91,7 +91,7 @@ class MyList<T> {
 
    /// <summary>Inserts the element at the specified index</summary>
    public void Insert (int index, T a) {
-      if (index < 0 || index > mCnt) throw new ArgumentOutOfRangeException ();
+      if (index < 0 || index > mCnt) throw new ArgumentOutOfRangeException (nameof (index));
       CheckCapacity ();
       for (int i = mCnt; i > index; i--) mArray[i] = mArray[i - 1];
       mArray[index] = a;
@@ -115,28 +115,29 @@ class MyList<T> {
 
    #region Implementation -------------------------------------------
    // Ensures there is enough capacity to add a new element, expanding when necessary
-   private void CheckCapacity () {
+   void CheckCapacity () {
       if (mCnt < Capacity) return;
-      T[] newArr = new T[Capacity * 2];
+      int newCapacity = Capacity == 0 ? 4 : Capacity * 2;
+      T[] newArr = new T[newCapacity];
       Array.Copy (mArray, newArr, mCnt);
       mArray = newArr;
    }
 
    // Returns the index of the first matching element
-   private int IndexOf (T a) {
+   int IndexOf (T a) {
       for (int i = 0; i < mCnt; i++) if (Equals (mArray[i], a)) return i;
       return -1;
    }
 
    // Validates that the index is within the range of existing elements
-   private void ValidateIndex (int index) {
-      if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException ();
+   void ValidateIndex (int index) {
+      if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
    }
    #endregion
 
    #region Private Data ---------------------------------------------
-   private T[] mArray;
-   private int mCnt;
+   T[] mArray;
+   int mCnt;
    #endregion
 }
 #endregion
