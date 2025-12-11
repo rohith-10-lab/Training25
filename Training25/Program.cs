@@ -19,45 +19,107 @@ internal class Program {
          list.Add (i);
          myList.Add (i);
       }
-      Write ("Default List after Add: ");
+      WriteLine ("Default List after Add:");
       PrintList (list);
-      Write ("MyList after Add:       ");
+      WriteLine ("MyList after Add:");
       myList.Print ();
       // Indexing
       list[3] = 99;
       myList[3] = 99;
-      Write ("\nDefault List after (list[3] = 99): ");
+      WriteLine ("\nDefault List after (list[3] = 99):");
       PrintList (list);
-      Write ("MyList after (myList[3] = 99):     ");
+      WriteLine ("MyList after (myList[3] = 99):");
       myList.Print ();
       // Remove value
       list.Remove (4);
       myList.Remove (4);
-      Write ("\nDefault List after Remove(4): ");
+      WriteLine ("\nDefault List after Remove(4):");
       PrintList (list);
-      Write ("MyList after Remove(4):       ");
+      WriteLine ("MyList after Remove(4):");
       myList.Print ();
       // Insert
       list.Insert (2, 50);
       myList.Insert (2, 50);
-      Write ("\nDefault List after Insert(2, 50): ");
+      WriteLine ("\nDefault List after Insert(2, 50):");
       PrintList (list);
-      Write ("MyList after Insert(2, 50):       ");
+      WriteLine ("MyList after Insert(2, 50):");
       myList.Print ();
       // Remove at
       list.RemoveAt (1);
       myList.RemoveAt (1);
-      Write ("\nDefault List after RemoveAt(1): ");
+      WriteLine ("\nDefault List after RemoveAt(1):");
       PrintList (list);
-      Write ("MyList after RemoveAt(1):       ");
+      WriteLine ("MyList after RemoveAt(1):");
       myList.Print ();
       // Count and capacity
       WriteLine ($"\nDefault List -> Count: {list.Count}, Capacity: {list.Capacity}");
       WriteLine ($"MyList ->       Count: {myList.Count}, Capacity: {myList.Capacity}");
+      // Exception test
+      WriteLine ("\nException test");
+      // Default List – index get
+      try {
+         WriteLine ("Default List index 100 get:");
+         WriteLine (list[100]);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // MyList – index get
+      try {
+         WriteLine ("MyList index 100 get:");
+         WriteLine (myList[100]);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // Default List – index set
+      try {
+         WriteLine ("\nDefault List index 100 set:");
+         list[100] = 1;
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // MyList – index set
+      try {
+         WriteLine ("MyList index 100 set:");
+         myList[100] = 1;
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // Default List – Insert invalid
+      try {
+         WriteLine ("\nDefault List Insert(100, 1):");
+         list.Insert (100, 1);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // MyList – Insert invalid
+      try {
+         WriteLine ("MyList Insert(100, 1):");
+         myList.Insert (100, 1);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // Default List – RemoveAt invalid
+      try {
+         WriteLine ("\nDefault List RemoveAt(100):");
+         list.RemoveAt (100);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // MyList – RemoveAt invalid
+      try {
+         WriteLine ("MyList RemoveAt(100):");
+         myList.RemoveAt (100);
+      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
+      // Other Data type tests
+      WriteLine ("\nTest with tuple");
+      List<(int, string)> tup1 = [(1, "one"), (2, "two")];
+      MyList<(int, string)> tup2 = new ();
+      tup2.Add ((1, "one"));
+      tup2.Add ((2, "two"));
+      WriteLine ("Default List<(int, string)>:");
+      PrintList (tup1);
+      WriteLine ("MyList<(int, string)>:");
+      tup2.Print ();
+      // Test with string
+      WriteLine ("\nTest with string");
+      List<string> str3 = ["xyz", "abc"];
+      MyList<string> str4 = new ();
+      str4.Add ("xyz");
+      str4.Add ("abc");
+      WriteLine ("Default List<string>:");
+      PrintList (str3);
+      WriteLine ("MyList<string>:");
+      str4.Print ();
 
       // Helper method for default List<T> to print the elements in the list
-      static void PrintList (List<int> list) {
-         foreach (int item in list) Write ($"{item} ");
+      static void PrintList<T> (List<T> list) {
+         foreach (T item in list) Write ($"{item} ");
          WriteLine ();
       }
    }
@@ -70,7 +132,7 @@ class MyList<T> {
    #region Constructor ----------------------------------------------
    /// <summary>Constructor that initializes a new list with the default capacity</summary>
    public MyList () {
-      mArray = new T[4];
+      mArray = new T[DEFCAP];
       mCnt = 0;
    }
    #endregion
@@ -144,8 +206,7 @@ class MyList<T> {
    // Ensures there is enough capacity to add a new element, expanding when necessary
    void CheckCapacity () {
       if (mCnt < Capacity) return;
-      int newCapacity = Capacity == 0 ? 4 : Capacity * 2;
-      T[] newArr = new T[newCapacity];
+      T[] newArr = new T[Capacity == 0 ? DEFCAP : Capacity * 2];
       Array.Copy (mArray, newArr, mCnt);
       mArray = newArr;
    }
@@ -161,6 +222,7 @@ class MyList<T> {
    #region Private Data ---------------------------------------------
    T[] mArray;
    int mCnt;
+   const int DEFCAP = 4;
    #endregion
 }
 #endregion
