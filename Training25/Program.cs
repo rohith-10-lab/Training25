@@ -12,27 +12,54 @@ namespace Training25;
 #region class Program -----------------------------------------------------------------------------
 internal class Program {
    static void Main () {
-      MyList<int> list = new ();
-      for (int i = 0; i <= 4; i++) list.Add (i);
-      Write ("Elements in the list: ");
-      list.Print ();
-      WriteLine ($"Element at index 1: {list[1]}");
-      Write ("After removing 4: ");
+      List<int> list = [];
+      MyList<int> myList = new ();
+      // Add
+      for (int i = 0; i <= 4; i++) {
+         list.Add (i);
+         myList.Add (i);
+      }
+      Write ("Default List after Add: ");
+      PrintList (list);
+      Write ("MyList after Add:       ");
+      myList.Print ();
+      // Indexing
+      list[3] = 99;
+      myList[3] = 99;
+      Write ("\nDefault List after (list[3] = 99): ");
+      PrintList (list);
+      Write ("MyList after (myList[3] = 99):     ");
+      myList.Print ();
+      // Remove value
       list.Remove (4);
-      list.Print ();
-      Write ("After inserting 4 at index 4: ");
-      list.Insert (4, 4);
-      list.Print ();
-      WriteLine ($"Current Count: {list.Count}");
-      WriteLine ($"Current Capacity: {list.Capacity}");
-      Write ("After removing element from index 4: ");
-      list.RemoveAt (4);
-      list.Print ();
-      list.Clear ();
-      Write ("Elements after clearing the list: ");
-      list.Print ();
-      WriteLine ($"Current Count: {list.Count}");
-      WriteLine ($"Current Capacity: {list.Capacity}");
+      myList.Remove (4);
+      Write ("\nDefault List after Remove(4): ");
+      PrintList (list);
+      Write ("MyList after Remove(4):       ");
+      myList.Print ();
+      // Insert
+      list.Insert (2, 50);
+      myList.Insert (2, 50);
+      Write ("\nDefault List after Insert(2, 50): ");
+      PrintList (list);
+      Write ("MyList after Insert(2, 50):       ");
+      myList.Print ();
+      // Remove at
+      list.RemoveAt (1);
+      myList.RemoveAt (1);
+      Write ("\nDefault List after RemoveAt(1): ");
+      PrintList (list);
+      Write ("MyList after RemoveAt(1):       ");
+      myList.Print ();
+      // Count and capacity
+      WriteLine ($"\nDefault List -> Count: {list.Count}, Capacity: {list.Capacity}");
+      WriteLine ($"MyList ->       Count: {myList.Count}, Capacity: {myList.Capacity}");
+
+      // Helper method for default List<T> to print the elements in the list
+      static void PrintList (List<int> list) {
+         foreach (int item in list) Write ($"{item} ");
+         WriteLine ();
+      }
    }
 }
 #endregion
@@ -58,11 +85,11 @@ class MyList<T> {
    /// <summary>Gets or sets the element at the specified index</summary>
    public T this[int index] {
       get { // executes when a value is read
-         ValidateIndex (index);
+         if (index < 0 || index >= mCnt) throw new IndexOutOfRangeException ();
          return mArray[index];
       }
       set { // executes when a value is written
-         ValidateIndex (index);
+         if (index < 0 || index >= mCnt) throw new IndexOutOfRangeException ();
          mArray[index] = value;
       }
    }
@@ -93,22 +120,22 @@ class MyList<T> {
    public void Insert (int index, T a) {
       if (index < 0 || index > mCnt) throw new ArgumentOutOfRangeException (nameof (index));
       CheckCapacity ();
-      for (int i = mCnt; i > index; i--) mArray[i] = mArray[i - 1];
+      Array.Copy (mArray, index, mArray, index + 1, mCnt - index);
       mArray[index] = a;
       mCnt++;
    }
 
    /// <summary>Removes the element at the specified index</summary>
    public void RemoveAt (int index) {
-      ValidateIndex (index);
-      for (int i = index; i < mCnt - 1; i++) mArray[i] = mArray[i + 1];
+      if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
+      Array.Copy (mArray, index + 1, mArray, index, mCnt - index - 1);
       mCnt--;
       mArray[mCnt] = default!;
    }
 
    /// <summary>Prints the elements in the list</summary>
    public void Print () {
-      for (int i = 0; i < mCnt; i++) Write (mArray[i] + " ");
+      for (int i = 0; i < mCnt; i++) Write ($"{mArray[i]} ");
       WriteLine ();
    }
    #endregion
@@ -125,13 +152,9 @@ class MyList<T> {
 
    // Returns the index of the first matching element
    int IndexOf (T a) {
-      for (int i = 0; i < mCnt; i++) if (Equals (mArray[i], a)) return i;
+      for (int i = 0; i < mCnt; i++)
+         if (EqualityComparer<T>.Default.Equals (mArray[i], a)) return i;
       return -1;
-   }
-
-   // Validates that the index is within the range of existing elements
-   void ValidateIndex (int index) {
-      if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
    }
    #endregion
 
