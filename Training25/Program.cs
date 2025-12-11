@@ -19,41 +19,26 @@ internal class Program {
          list.Add (i);
          myList.Add (i);
       }
-      WriteLine ("Default List after Add:");
-      PrintList (list);
-      WriteLine ("MyList after Add:");
-      myList.Print ();
+      Compare ("After Add", list, myList);
       // Indexing
       list[3] = 99;
       myList[3] = 99;
-      WriteLine ("\nDefault List after (list[3] = 99):");
-      PrintList (list);
-      WriteLine ("MyList after (myList[3] = 99):");
-      myList.Print ();
+      Compare ("After (list[3] = 99)", list, myList);
       // Remove value
       list.Remove (4);
       myList.Remove (4);
-      WriteLine ("\nDefault List after Remove(4):");
-      PrintList (list);
-      WriteLine ("MyList after Remove(4):");
-      myList.Print ();
+      Compare ("After Remove(4)", list, myList);
       // Insert
       list.Insert (2, 50);
       myList.Insert (2, 50);
-      WriteLine ("\nDefault List after Insert(2, 50):");
-      PrintList (list);
-      WriteLine ("MyList after Insert(2, 50):");
-      myList.Print ();
-      // Remove at
+      Compare ("After Insert(2, 50)", list, myList);
+      // RemoveAt
       list.RemoveAt (1);
       myList.RemoveAt (1);
-      WriteLine ("\nDefault List after RemoveAt(1):");
-      PrintList (list);
-      WriteLine ("MyList after RemoveAt(1):");
-      myList.Print ();
+      Compare ("After RemoveAt(1)", list, myList);
       // Count and capacity
       WriteLine ($"\nDefault List -> Count: {list.Count}, Capacity: {list.Capacity}");
-      WriteLine ($"MyList ->       Count: {myList.Count}, Capacity: {myList.Capacity}");
+      WriteLine ($"MyList       -> Count: {myList.Count}, Capacity: {myList.Capacity}");
       // Exception test
       WriteLine ("\nException test");
       // Default List – index get
@@ -102,25 +87,21 @@ internal class Program {
       MyList<(int, string)> tup2 = new ();
       tup2.Add ((1, "one"));
       tup2.Add ((2, "two"));
-      WriteLine ("Default List<(int, string)>:");
-      PrintList (tup1);
-      WriteLine ("MyList<(int, string)>:");
-      tup2.Print ();
+      Compare ("Tuple test", tup1, tup2);
       // Test with string
       WriteLine ("\nTest with string");
       List<string> str3 = ["xyz", "abc"];
       MyList<string> str4 = new ();
       str4.Add ("xyz");
       str4.Add ("abc");
-      WriteLine ("Default List<string>:");
-      PrintList (str3);
-      WriteLine ("MyList<string>:");
-      str4.Print ();
+      Compare ("String test", str3, str4);
 
-      // Helper method for default List<T> to print the elements in the list
-      static void PrintList<T> (List<T> list) {
-         foreach (T item in list) Write ($"{item} ");
-         WriteLine ();
+      // Checks whether List<T> and MyList<T> contain identical elements and prints PASS/FAIL
+      static void Compare<T> (string msg, List<T> l, MyList<T> m) {
+         bool equal = l.Count == m.Count;
+         for (int i = 0; equal && i < l.Count; i++)
+            equal = EqualityComparer<T>.Default.Equals (l[i], m[i]);
+         WriteLine (equal ? $"{msg}: PASS" : $"{msg}: FAIL");
       }
    }
 }
@@ -191,8 +172,7 @@ class MyList<T> {
    public void RemoveAt (int index) {
       if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
       Array.Copy (mArray, index + 1, mArray, index, mCnt - index - 1);
-      mCnt--;
-      mArray[mCnt] = default!;
+      mArray[mCnt--] = default!;
    }
 
    /// <summary>Prints the elements in the list</summary>
