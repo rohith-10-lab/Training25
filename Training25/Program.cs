@@ -12,97 +12,92 @@ namespace Training25;
 #region class Program -----------------------------------------------------------------------------
 internal class Program {
    static void Main () {
-      List<int> list = [];
-      MyList<int> myList = new ();
-      // Add
-      for (int i = 0; i <= 4; i++) {
-         list.Add (i);
-         myList.Add (i);
-      }
-      Compare ("After Add", list, myList);
-      // Indexing
-      list[3] = 99;
-      myList[3] = 99;
-      Compare ("After (list[3] = 99)", list, myList);
-      // Remove value
-      list.Remove (4);
-      myList.Remove (4);
-      Compare ("After Remove(4)", list, myList);
-      // Insert
-      list.Insert (2, 50);
-      myList.Insert (2, 50);
-      Compare ("After Insert(2, 50)", list, myList);
-      // RemoveAt
-      list.RemoveAt (1);
-      myList.RemoveAt (1);
-      Compare ("After RemoveAt(1)", list, myList);
-      // Count and capacity
-      WriteLine ($"\nDefault List -> Count: {list.Count}, Capacity: {list.Capacity}");
-      WriteLine ($"MyList       -> Count: {myList.Count}, Capacity: {myList.Capacity}");
-      // Exception test
-      WriteLine ("\nException test");
-      // Default List – index get
-      try {
-         WriteLine ("Default List index 100 get:");
-         WriteLine (list[100]);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // MyList – index get
-      try {
-         WriteLine ("MyList index 100 get:");
-         WriteLine (myList[100]);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // Default List – index set
-      try {
-         WriteLine ("\nDefault List index 100 set:");
-         list[100] = 1;
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // MyList – index set
-      try {
-         WriteLine ("MyList index 100 set:");
-         myList[100] = 1;
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // Default List – Insert invalid
-      try {
-         WriteLine ("\nDefault List Insert(100, 1):");
-         list.Insert (100, 1);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // MyList – Insert invalid
-      try {
-         WriteLine ("MyList Insert(100, 1):");
-         myList.Insert (100, 1);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // Default List – RemoveAt invalid
-      try {
-         WriteLine ("\nDefault List RemoveAt(100):");
-         list.RemoveAt (100);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // MyList – RemoveAt invalid
-      try {
-         WriteLine ("MyList RemoveAt(100):");
-         myList.RemoveAt (100);
-      } catch (Exception ex) { WriteLine (ex.GetType ().Name); }
-      // Other Data type tests
-      WriteLine ("\nTest with tuple");
-      List<(int, string)> tup1 = [(1, "one"), (2, "two")];
-      MyList<(int, string)> tup2 = new ();
-      tup2.Add ((1, "one"));
-      tup2.Add ((2, "two"));
-      Compare ("Tuple test", tup1, tup2);
-      // Test with string
-      WriteLine ("\nTest with string");
-      List<string> str3 = ["xyz", "abc"];
-      MyList<string> str4 = new ();
-      str4.Add ("xyz");
-      str4.Add ("abc");
-      Compare ("String test", str3, str4);
+      // Integer test
+      WriteLine ("INTEGER TEST");
+      var intList = new List<int> ();
+      var intMyList = new MyList<int> ();
+      TestAdd ([0, 1, 2, 3, 4], intList, intMyList);
+      TestIndexing (3, 99, intList, intMyList);
+      TestRemove (4, intList, intMyList);
+      TestInsert (2, 50, intList, intMyList);
+      TestRemoveAt (1, intList, intMyList);
+      TestClear (intList, intMyList);
+      // Tuple test
+      WriteLine ("\nTUPLE TEST");
+      var tupList = new List<(int, string)> ();
+      var tupMyList = new MyList<(int, string)> ();
+      TestAdd ([(1, "one"), (2, "two")], tupList, tupMyList);
+      TestIndexing (1, (99, "changed"), tupList, tupMyList);
+      TestRemove ((1, "one"), tupList, tupMyList);
+      TestInsert (0, (5, "five"), tupList, tupMyList);
+      TestRemoveAt (1, tupList, tupMyList);
+      TestClear (tupList, tupMyList);
+      // String test
+      WriteLine ("\nSTRING TEST");
+      var strList = new List<string> ();
+      var strMyList = new MyList<string> ();
+      TestAdd (["abc", "xyz"], strList, strMyList);
+      TestIndexing (1, "updated", strList, strMyList);
+      TestRemove ("abc", strList, strMyList);
+      TestInsert (1, "new", strList, strMyList);
+      TestRemoveAt (1, strList, strMyList);
+      TestClear (strList, strMyList);
 
-      // Checks whether List<T> and MyList<T> contain identical elements and prints PASS/FAIL
-      static void Compare<T> (string msg, List<T> l, MyList<T> m) {
-         bool equal = l.Count == m.Count;
-         for (int i = 0; equal && i < l.Count; i++)
-            equal = EqualityComparer<T>.Default.Equals (l[i], m[i]);
-         WriteLine (equal ? $"{msg}: PASS" : $"{msg}: FAIL");
+      // Adds the given elements to both lists and compares the results
+      void TestAdd<T> (T[] values, List<T> l, MyList<T> m) {
+         foreach (var v in values) {
+            l.Add (v);
+            m.Add (v);
+         }
+         PrintResult ("After Add", l, m);
       }
+
+      // Sets the element at the given index in both lists and compares the results
+      void TestIndexing<T> (int index, T value, List<T> l, MyList<T> m) {
+         l[index] = value;
+         m[index] = value;
+         PrintResult ("After Indexing", l, m);
+      }
+
+      // Removes the given element from both lists and compares the results
+      void TestRemove<T> (T value, List<T> l, MyList<T> m) {
+         l.Remove (value);
+         m.Remove (value);
+         PrintResult ("After Remove", l, m);
+      }
+
+      // Inserts the element at the given index in both lists and compares the results
+      void TestInsert<T> (int index, T value, List<T> l, MyList<T> m) {
+         l.Insert (index, value);
+         m.Insert (index, value);
+         PrintResult ("After Insert", l, m);
+      }
+
+      // Removes the element at the given index in both lists and compares the results
+      void TestRemoveAt<T> (int index, List<T> l, MyList<T> m) {
+         l.RemoveAt (index);
+         m.RemoveAt (index);
+         PrintResult ("After RemoveAt", l, m);
+      }
+
+      // Clears both lists and compares the results
+      void TestClear<T> (List<T> l, MyList<T> m) {
+         l.Clear ();
+         m.Clear ();
+         PrintResult ("After Clear", l, m);
+      }
+
+      // Checks whether both lists have the same count, capacity, and elements
+      bool IsEqual<T> (List<T> l, MyList<T> m) {
+         if (l.Count != m.Count || l.Capacity != m.Capacity) return false;
+         for (int i = 0; i < l.Count; i++)
+            if (!EqualityComparer<T>.Default.Equals (l[i], m[i])) return false;
+         return true;
+      }
+
+      // Prints PASS or FAIL based on whether the two lists are equal
+      void PrintResult<T> (string msg, List<T> l, MyList<T> m)
+         => WriteLine ($"{msg}: {(IsEqual (l, m) ? "PASS" : "FAIL")}");
    }
 }
 #endregion
@@ -147,8 +142,8 @@ class MyList<T> {
 
    /// <summary>Removes the first occurrence of the given element</summary>
    public bool Remove (T a) {
-      int idx = IndexOf (a);
-      if (idx == -1) return false;
+      int idx = Array.IndexOf (mArray, a, 0, mCnt);
+      if (idx < 0) return false;
       RemoveAt (idx);
       return true;
    }
@@ -171,14 +166,9 @@ class MyList<T> {
    /// <summary>Removes the element at the specified index</summary>
    public void RemoveAt (int index) {
       if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
-      Array.Copy (mArray, index + 1, mArray, index, mCnt - index - 1);
-      mArray[mCnt--] = default!;
-   }
-
-   /// <summary>Prints the elements in the list</summary>
-   public void Print () {
-      for (int i = 0; i < mCnt; i++) Write ($"{mArray[i]} ");
-      WriteLine ();
+      mCnt--;
+      Array.Copy (mArray, index + 1, mArray, index, mCnt - index);
+      mArray[mCnt] = default!;
    }
    #endregion
 
@@ -186,16 +176,7 @@ class MyList<T> {
    // Ensures there is enough capacity to add a new element, expanding when necessary
    void CheckCapacity () {
       if (mCnt < Capacity) return;
-      T[] newArr = new T[Capacity == 0 ? DEFCAP : Capacity * 2];
-      Array.Copy (mArray, newArr, mCnt);
-      mArray = newArr;
-   }
-
-   // Returns the index of the first matching element
-   int IndexOf (T a) {
-      for (int i = 0; i < mCnt; i++)
-         if (EqualityComparer<T>.Default.Equals (mArray[i], a)) return i;
-      return -1;
+      Array.Resize (ref mArray, Capacity == 0 ? DEFCAP : Capacity * 2);
    }
    #endregion
 
