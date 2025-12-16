@@ -123,11 +123,11 @@ class MyList<T> {
    /// <summary>Gets or sets the element at the specified index</summary>
    public T this[int index] {
       get { // executes when a value is read
-         if (index < 0 || index >= mCnt) throw new IndexOutOfRangeException ();
+         ValidateIndex (index);
          return mArray[index];
       }
       set { // executes when a value is written
-         if (index < 0 || index >= mCnt) throw new IndexOutOfRangeException ();
+         ValidateIndex (index);
          mArray[index] = value;
       }
    }
@@ -138,14 +138,6 @@ class MyList<T> {
    public void Add (T a) {
       CheckCapacity ();
       mArray[mCnt++] = a;
-   }
-
-   /// <summary>Removes the first occurrence of the given element</summary>
-   public bool Remove (T a) {
-      int idx = Array.IndexOf (mArray, a, 0, mCnt);
-      if (idx < 0) return false;
-      RemoveAt (idx);
-      return true;
    }
 
    /// <summary>Clears all stored elements while keeping the current capacity unchanged</summary>
@@ -163,6 +155,15 @@ class MyList<T> {
       mCnt++;
    }
 
+   /// <summary>Removes the first occurrence of the given element</summary>
+   public bool Remove (T a) {
+      int idx = Array.IndexOf (mArray, a, 0, mCnt);
+      if (idx < 0) return false;
+      ValidateIndex (idx);
+      RemoveAt (idx);
+      return true;
+   }
+
    /// <summary>Removes the element at the specified index</summary>
    public void RemoveAt (int index) {
       if (index < 0 || index >= mCnt) throw new ArgumentOutOfRangeException (nameof (index));
@@ -177,6 +178,11 @@ class MyList<T> {
    void CheckCapacity () {
       if (mCnt < Capacity) return;
       Array.Resize (ref mArray, Capacity == 0 ? DEFCAP : Capacity * 2);
+   }
+
+   // Validates that the index refers to existing element in the list
+   void ValidateIndex (int index) {
+      if (index < 0 || index >= mCnt) throw new IndexOutOfRangeException ();
    }
    #endregion
 
